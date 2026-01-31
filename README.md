@@ -4,7 +4,7 @@
 
 This library is required for all [NightExpress](https://www.spigotmc.org/resources/authors/81588/)'s plugins.
 
-## Features
+## Featuress
 
 **✅ Features Included:**
 - ✅ **Software Compatibility**: Spigot and Paper compatible.
