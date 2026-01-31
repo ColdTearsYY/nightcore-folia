@@ -1,43 +1,46 @@
-name: Build and Test  
+name: Build and Retrieve Compiled Files  
   
 on:  
   push:  
-    branches: [ main, develop ]  
+    branches: [ feat/folia-support ]  
   pull_request:  
-    branches: [ main ]  
+    branches: [ feat/folia-support ]  
   
 jobs:  
   build:  
     runs-on: ubuntu-latest  
-    
+      
     steps:  
-    - name: Checkout code  
-      uses: actions/checkout@v4  
-        
+    - uses: actions/checkout@v4  
+      
     - name: Set up JDK 21  
       uses: actions/setup-java@v4  
       with:  
         java-version: '21'  
         distribution: 'temurin'  
-          
+      
     - name: Cache Maven dependencies  
       uses: actions/cache@v3  
       with:  
         path: ~/.m2  
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}  
         restore-keys: ${{ runner.os }}-m2  
-          
-    - name: Compile and package  
-      run: mvn clean compile package -DskipTests  
-        
-    - name: Upload build artifacts  
+      
+    - name: Build with Maven  
+      run: mvn -B clean package --file pom.xml  
+      
+    - name: Upload shaded JAR artifacts  
       uses: actions/upload-artifact@v3  
       with:  
-        name: nightcore-jars  
+        name: nightcore-shaded-jar  
+        path: main/target/*-shaded.jar  
+        retention-days: 30  
+      
+    - name: Upload all JAR artifacts  
+      uses: actions/upload-artifact@v3  
+      with:  
+        name: nightcore-all-jars  
         path: |  
-          main/target/*.jar  
-          bridge/target/*.jar  
-          utils/target/*.jar  
-          spigot/target/*.jar  
-          paper/target/*.jar  
+          **/target/*.jar  
+          !**/target/original-*.jar  
         retention-days: 30
