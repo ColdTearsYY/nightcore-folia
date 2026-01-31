@@ -2,14 +2,16 @@ name: Build and Retrieve Compiled Files
   
 on:  
   push:  
-    branches: [ feat/folia-support ]  
+    branches: [ feat/folia-support, main, master ]  
   pull_request:  
-    branches: [ feat/folia-support ]  
+    branches: [ feat/folia-support, main, master ]
+  workflow_dispatch:
   
 jobs:  
   build:  
-    runs-on: ubuntu-latest  
-      workflow_dispatch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:  
     - uses: actions/checkout@v4  
       
@@ -29,18 +31,23 @@ jobs:
     - name: Build with Maven  
       run: mvn -B clean package --file pom.xml  
       
+    - name: List built artifacts
+      run: find . -path '*/target/*.jar' ! -path '*/target/original-*.jar' -type f
+      
     - name: Upload shaded JAR artifacts  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: nightcore-shaded-jar  
         path: main/target/*-shaded.jar  
-        retention-days: 30  
+        retention-days: 30
+        if-no-files-found: warn
       
     - name: Upload all JAR artifacts  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: nightcore-all-jars  
         path: |  
           **/target/*.jar  
           !**/target/original-*.jar  
         retention-days: 30
+        if-no-files-found: warn

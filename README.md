@@ -49,6 +49,16 @@ This library is required for all [NightExpress](https://www.spigotmc.org/resourc
 - Folia Supported: <span style="color:red">**No**</span>
 - Forge Supported: <span style="color:red">**No**</span>
 
+## Getting Compiled Files
+
+You can obtain compiled JAR files through GitHub Actions:
+
+1. Visit the [Actions tab](../../actions/workflows/build-and-test.yml) in this repository
+2. Select a successful build run
+3. Download the artifacts from the bottom of the page
+
+For detailed instructions, see [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md).
+
 ## Links
 - [Github Releases](https://github.com/nulli0n/nightcore-spigot/releases)
 - [Modrinth](https://modrinth.com/plugin/nightcore)
