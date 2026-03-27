@@ -5,6 +5,7 @@ on:
     branches: [ feat/folia-support ]  
   pull_request:  
     branches: [ feat/folia-support ]  
+  workflow_dispatch:  
   
 jobs:  
   build:  
@@ -20,7 +21,7 @@ jobs:
         distribution: 'temurin'  
       
     - name: Cache Maven dependencies  
-      uses: actions/cache@v3  
+      uses: actions/cache@v4  
       with:  
         path: ~/.m2  
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}  
@@ -30,14 +31,14 @@ jobs:
       run: mvn -B clean package --file pom.xml  
       
     - name: Upload shaded JAR artifacts  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: nightcore-shaded-jar  
         path: main/target/*-shaded.jar  
         retention-days: 30  
       
     - name: Upload all JAR artifacts  
-      uses: actions/upload-artifact@v3  
+      uses: actions/upload-artifact@v4  
       with:  
         name: nightcore-all-jars  
         path: |  
